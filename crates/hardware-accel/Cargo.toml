@@ -1,0 +1,13 @@
+[package]
+name = "hardware-accel"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+bytemuck.workspace = true
+
+[features]
+default = ["simd"]
+simd = []
+avx512 = ["simd"]

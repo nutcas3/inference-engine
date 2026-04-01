@@ -1,0 +1,13 @@
+[package]
+name = "loader-gguf"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+engine-core = { path = "../engine-core" }
+memmap2.workspace = true
+bytemuck.workspace = true
+thiserror.workspace = true
+serde.workspace = true
+bincode.workspace = true

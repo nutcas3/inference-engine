@@ -1,0 +1,10 @@
+[package]
+name = "loader-onnx"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+engine-core = { path = "../engine-core" }
+prost.workspace = true
+thiserror.workspace = true
