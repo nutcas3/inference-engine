@@ -1,0 +1,74 @@
+[workspace]
+members = [
+    "crates/engine-core",
+    "crates/engine-runtime",
+    "crates/loader-gguf",
+    "crates/loader-onnx",
+    "crates/hardware-accel",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+authors = ["Inference Engine Team"]
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+# Memory Management & Zero-Copy
+memmap2 = "0.9"
+bytemuck = { version = "1.15", features = ["derive"] }
+
+# Async Primitives (No Runtime)
+futures = { version = "0.3", default-features = false, features = ["alloc"] }
+
+# Tensor & Math Primitives
+# Note: Using ndarray as "numr" and "boostr" are hypothetical 2026 crates
+ndarray = { version = "0.17.2", features = ["rayon"] }
+half = { version = "2.4", features = ["bytemuck"] }
+
+# Serialization for Model Loading
+serde = { version = "1.0", features = ["derive"] }
+bincode = "3.0.0"
+prost = "0.14.3"  # For ONNX protobuf parsing
+
+# Performance & SIMD
+rayon = "1.10"
+
+# Utilities
+thiserror = "2.0.18"
+tracing = { version = "0.1", features = ["attributes"] }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.bench]
+inherits = "release"
+
+[profile.dev]
+opt-level = 1  # Faster dev builds
+
+# Main binary
+[package]
+name = "inference-engine"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+engine-core = { path = "crates/engine-core" }
+engine-runtime = { path = "crates/engine-runtime" }
+loader-gguf = { path = "crates/loader-gguf" }
+loader-onnx = { path = "crates/loader-onnx" }
+hardware-accel = { path = "crates/hardware-accel" }
+clap = { version = "4.5", features = ["derive"] }
+tracing-subscriber = "0.3"
+
+[[bin]]
+name = "inference-engine"
+path = "src/main.rs"
